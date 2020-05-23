@@ -1,0 +1,10 @@
+---
+- name: restart yum-cron
+  systemd:
+    name: yum-cron
+    state: restarted
+
+- name: enable yum-cron
+  systemd:
+    name: yum-cron
+    enabled: yes

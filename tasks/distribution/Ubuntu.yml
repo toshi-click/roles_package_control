@@ -1,0 +1,51 @@
+---
+- name: delete apt lock files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/lib/apt/lists/lock
+    - /var/cache/apt/archives/lock
+
+- name: Updating apt
+  shell: apt update -y --allow-releaseinfo-change
+
+- name: install aptitude
+  apt:
+    name: aptitude
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Updating host using apt
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+  ignore_errors: yes
+
+- name: apt auto update install tools
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - debconf-utils
+    - unattended-upgrades
+    - apt-listchanges
+
+- name: create APT auto-upgrades configuration
+  copy:
+    src: etc/apt/apt.conf.d/20auto-upgrades
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    owner: root
+    group: root
+    mode: 0644
+
+- name: create unattended-upgrades configuration
+  copy:
+    src: etc/apt/apt.conf.d/50unattended-upgrades
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    owner: root
+    group: root
+    mode: 0644
