@@ -1,1 +1,4 @@
 ---
+package_control_mail_send: true
+package_control_mail_to: root
+package_control_auto_reboot: "false"
