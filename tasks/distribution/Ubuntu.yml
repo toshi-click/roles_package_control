@@ -43,7 +43,7 @@
     mode: 0644
 
 - name: create unattended-upgrades configuration
-  copy:
+  template:
     src: etc/apt/apt.conf.d/50unattended-upgrades
     dest: /etc/apt/apt.conf.d/50unattended-upgrades
     owner: root
